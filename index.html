@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具导航 - 100+ 实用工具</title>
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --sub: #666666;
+  --accent: #1a73e8;
+  --accent-hover: #1557b0;
+  --border: #e0e0e0;
+  --tag: #e8f0fe;
+  --tag-text: #1a73e8;
+  --shadow: rgba(0,0,0,0.08);
+  --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --card: #16213e;
+  --text: #e0e0e0;
+  --sub: #999999;
+  --accent: #4fc3f7;
+  --accent-hover: #29b6f6;
+  --border: #2a3a5e;
+  --tag: #1a3a5e;
+  --tag-text: #4fc3f7;
+  --shadow: rgba(0,0,0,0.3);
+  --header-bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+  line-height: 1.6;
+}
+.header {
+  background: var(--header-bg);
+  color: white;
+  padding: 30px 20px 25px;
+  text-align: center;
+  position: relative;
+}
+.header h1 { font-size: 28px; margin-bottom: 5px; }
+.header p { opacity: 0.85; font-size: 14px; }
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.35); }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.search-box {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding: 15px 0;
+}
+.search-box input {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.3s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0;
+}
+.filter-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 25px 0 12px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--shadow); }
+.card h3 { font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.card p { font-size: 13px; color: var(--sub); margin-bottom: 10px; line-height: 1.4; }
+.card-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.card a.btn-open {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 7px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+.card a.btn-open:hover { background: var(--accent-hover); }
+.btn-copy {
+  padding: 7px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-copy:hover { border-color: var(--accent); color: var(--accent); }
+.btn-copy.copied { background: #4caf50; color: white; border-color: #4caf50; }
+.click-count {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 11px;
+  color: var(--sub);
+  background: var(--tag);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+mark { background: #fff3cd; color: #856404; padding: 0 2px; border-radius: 3px; }
+[data-theme="dark"] mark { background: #5a4a1a; color: #ffd54f; }
+.hidden { display: none !important; }
+.freq-section { margin-top: 20px; }
+@media (max-width: 600px) {
+  .header h1 { font-size: 22px; }
+  .grid { grid-template-columns: 1fr; }
+  .card h3 { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  <h1>🔧 工具导航</h1>
+  <p>100+ 实用工具 · 搜索即达 · 点击跳转</p>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="search" placeholder="🔍 搜索工具名称、描述、关键词..." oninput="search()">
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="freq-section hidden" id="freqSection">
+    <div class="section-title">⭐ 常用工具</div>
+    <div class="grid" id="freqGrid"></div>
+  </div>
+
+  <div id="allTools"></div>
+</div>
+
+<script>
+var tools = [
+// 🤖 AI
+{ c: "🤖 AI 工具", n: "通义", d: "阿里AI助手，写作、总结、聊天全能", u: "https://tongyi.aliyun.com", k: "AI 写作 阿里 通义千问" },
+{ c: "🤖 AI 工具", n: "腾讯元宝", d: "腾讯出品AI助手，支持文件分析", u: "https://yuanbao.tencent.com", k: "AI 腾讯 混元" },
+{ c: "🤖 AI 工具", n: "豆包", d: "字节跳动AI，对话、写作、翻译", u: "https://www.doubao.com", k: "AI 字节 聊天" },
+{ c: "🤖 AI 工具", n: "Kimi", d: "长文本AI助手，支持超长文档分析", u: "https://kimi.moonshot.cn", k: "AI 长文本 文档" },
+{ c: "🤖 AI 工具", n: "文心一言", d: "百度AI助手，中文理解强", u: "https://yiyan.baidu.com", k: "AI 百度 写作" },
+{ c: "🤖 AI 工具", n: "ChatGPT", d: "OpenAI出品，全球最强对话AI", u: "https://chat.openai.com", k: "AI GPT 对话" },
+{ c: "🤖 AI 工具", n: "Claude", d: "Anthropic出品，长文本处理优秀", u: "https://claude.ai", k: "AI 长文本 分析" },
+{ c: "🤖 AI 工具", n: "Midjourney", d: "AI绘画神器，输入文字生成图片", u: "https://www.midjourney.com", k: "AI 绘画 图片生成" },
+{ c: "🤖 AI 工具", n: "Suno", d: "AI音乐生成，输入歌词自动作曲", u: "https://suno.com", k: "AI 音乐 作曲" },
+{ c: "🤖 AI 工具", n: "Cursor", d: "AI代码编辑器，写代码效率翻倍", u: "https://cursor.sh", k: "AI 编程 代码" },
+{ c: "🤖 AI 工具", n: "Gamma", d: "AI生成PPT，一句话出演示文稿", u: "https://gamma.app", k: "AI PPT 演示" },
+{ c: "🤖 AI 工具", n: "Notion AI", d: "笔记里的AI助手，帮你写和整理", u: "https://notion.so", k: "AI 笔记 写作" },
+
+// 🖼️ 图片
+{ c: "🖼️ 图片处理", n: "Remove.bg", d: "一键在线抠图，自动去背景", u: "https://www.remove.bg", k: "抠图 去背景" },
+{ c: "🖼️ 图片处理", n: "TinyPNG", d: "压缩图片体积，画质几乎无损", u: "https://tinypng.com", k: "压缩 图片体积" },
+{ c: "🖼️ 图片处理", n: "Bigjpg", d: "AI放大图片，放大不失真", u: "https://bigjpg.com", k: "放大 图片 超分辨率" },
+{ c: "🖼️ 图片处理", n: "Photopea", d: "在线PS，免费替代Photoshop", u: "https://www.photopea.com", k: "在线PS 修图 编辑" },
+{ c: "🖼️ 图片处理", n: "PicWish", d: "去水印、画质修复、背景移除", u: "https://picwish.cn", k: "去水印 修复" },
+{ c: "🖼️ 图片处理", n: "OCR.space", d: "图片转文字，支持多语言", u: "https://ocr.space", k: "OCR 文字识别" },
+{ c: "🖼️ 图片处理", n: "Snipaste", d: "截图+贴图工具，效率神器", u: "https://snipaste.com", k: "截图 贴图" },
+{ c: "🖼️ 图片处理", n: "Iconfont", d: "阿里图标库，海量矢量图标免费下载", u: "https://www.iconfont.cn", k: "图标 矢量 下载" },
+{ c: "🖼️ 图片处理", n: "Coolors", d: "配色方案生成器，设计师必备", u: "https://coolors.co", k: "配色 颜色 设计" },
+{ c: "🖼️ 图片处理", n: "Upscayl", d: "免费开源AI图片放大工具", u: "https://upscayl.org", k: "AI 放大 开源" },
+
+// 🎬 音视频
+{ c: "🎬 音视频", n: "剪映", d: "字节出品视频剪辑，手机电脑都能用", u: "https://www.capcut.cn", k: "视频剪辑 剪映" },
+{ c: "🎬 音视频", n: "CapCut", d: "剪映国际版，功能一样", u: "https://www.capcut.com", k: "视频剪辑" },
+{ c: "🎬 音视频", n: "Online Video Cutter", d: "在线裁剪视频，不用下载", u: "https://online-video-cutter.com", k: "裁剪 视频 在线" },
+{ c: "🎬 音视频", n: "Audacity", d: "免费开源音频编辑软件", u: "https://www.audacityteam.org", k: "音频 录音 编辑" },
+{ c: "🎬 音视频", n: "OBS Studio", d: "免费录屏+直播推流软件", u: "https://obsproject.com", k: "录屏 直播" },
+{ c: "🎬 音视频", n: "Veed.io", d: "在线视频编辑，加字幕、裁剪、压缩", u: "https://veed.io", k: "在线 视频编辑" },
+{ c: "🎬 音视频", n: "LALAL.ai", d: "AI人声分离，提取伴奏/人声", u: "https://www.lalal.ai", k: "人声分离 伴奏" },
+{ c: "🎬 音视频", n: "12ten", d: "在线音视频格式转换", u: "https://12ten.net", k: "格式转换 音视频" },
+
+// 🔄 转换
+{ c: "🔄 格式转换", n: "CloudConvert", d: "万能格式转换，支持200+格式", u: "https://cloudconvert.com", k: "格式转换 万能" },
+{ c: "🔄 格式转换", n: "iLovePDF", d: "PDF合并、拆分、压缩、转换", u: "https://www.ilovepdf.com", k: "PDF 合并 拆分" },
+{ c: "🔄 格式转换", n: "Smallpdf", d: "PDF在线处理工具箱", u: "https://smallpdf.com", k: "PDF 压缩 转Word" },
+{ c: "🔄 格式转换", n: "Convertio", d: "文件格式在线转换", u: "https://convertio.co", k: "文件转换" },
+{ c: "🔄 格式转换", n: "PDF24", d: "免费PDF工具箱，本地也能用", u: "https://tools.pdf24.org", k: "PDF 免费 工具箱" },
+{ c: "🔄 格式转换", n: "Zamzar", d: "老牌在线格式转换", u: "https://www.zamzar.com", k: "格式转换" },
+{ c: "🔄 格式转换", n: "HandBrake", d: "开源视频转码工具", u: "https://handbrake.fr", k: "视频 转码 开源" },
+{ c: "🔄 格式转换", n: "Pandoc", d: "文档格式万能转换器（命令行）", u: "https://pandoc.org", k: "文档 转换 命令行" },
+
+// 🌐 翻译
+{ c: "🌐 翻译", n: "DeepL", d: "最准确的翻译工具之一", u: "https://www.deepl.com", k: "翻译 精准" },
+{ c: "🌐 翻译", n: "Google 翻译", d: "谷歌翻译，支持100+语言", u: "https://translate.google.com", k: "翻译 谷歌" },
+{ c: "🌐 翻译", n: "有道翻译", d: "网易出品，中英互译强", u: "https://fanyi.youdao.com", k: "翻译 网易" },
+{ c: "🌐 翻译", n: "术语在线", d: "专业术语翻译查询", u: "https://www.termonline.cn", k: "术语 专业 翻译" },
+{ c: "🌐 翻译", n: "沉浸式翻译", d: "浏览器插件，双语对照翻译网页", u: "https://immersivetranslate.com", k: "网页翻译 插件" },
+{ c: "🌐 翻译", n: "彩云小译", d: "中英对照翻译，文档也能翻", u: "https://fanyi.caiyunapp.com", k: "中英对照" },
+{ c: "🌐 翻译", n: "Papago", d: "韩语翻译神器", u: "https://papago.naver.com", k: "韩语 翻译" },
+
+// 📋 办公
+{ c: "📋 办公协作", n: "腾讯文档", d: "在线协作文档，微信直接打开", u: "https://docs.qq.com", k: "文档 协作 腾讯" },
+{ c: "📋 办公协作", n: "飞书", d: "字节跳动一站式协作平台", u: "https://feishu.cn", k: "协作 办公 文档" },
+{ c: "📋 办公协作", n: "XMind", d: "思维导图工具", u: "https://xmind.cn", k: "思维导图 脑图" },
+{ c: "📋 办公协作", n: "ProcessOn", d: "在线流程图、思维导图", u: "https://processon.com", k: "流程图 架构图" },
+{ c: "📋 办公协作", n: "腾讯问卷", d: "免费在线表单/问卷工具", u: "https://wj.qq.com", k: "问卷 表单 收集" },
+{ c: "📋 办公协作", n: "通义听悟", d: "会议录音转文字+AI总结", u: "https://tingwu.aliyun.com", k: "录音 转文字 会议" },
+{ c: "📋 办公协作", n: "奶牛快传", d: "大文件传输，不用注册", u: "https://cowtransfer.com", k: "文件传输 大文件" },
+{ c: "📋 办公协作", n: "金山文档", d: "WPS在线文档协作", u: "https://www.kdocs.cn", k: "WPS 文档 协作" },
+{ c: "📋 办公协作", n: "石墨文档", d: "轻量在线协作文档", u: "https://shimo.im", k: "文档 协作" },
+{ c: "📋 办公协作", n: "Trello", d: "看板任务管理工具", u: "https://trello.com", k: "任务管理 看板" },
+
+// 🎨 设计
+{ c: "🎨 设计素材", n: "Canva", d: "在线设计海报、PPT、封面", u: "https://www.canva.cn", k: "设计 海报 PPT" },
+{ c: "🎨 设计素材", n: "稿定设计", d: "国内在线设计平台，模板多", u: "https://www.gaoding.com", k: "设计 模板 海报" },
+{ c: "🎨 设计素材", n: "Pexels", d: "免费高清图片素材", u: "https://www.pexels.com", k: "图片素材 免费" },
+{ c: "🎨 设计素材", n: "Unsplash", d: "高质量免费图片", u: "https://unsplash.com", k: "图片素材 高清" },
+{ c: "🎨 设计素材", n: "Looka", d: "AI生成Logo设计", u: "https://looka.com", k: "Logo 设计 AI" },
+{ c: "🎨 设计素材", n: "字体天下", d: "免费商用字体下载", u: "https://www.fonts.net.cn", k: "字体 下载" },
+{ c: "🎨 设计素材", n: "Figma", d: "在线UI设计协作工具", u: "https://www.figma.com", k: "UI 设计 原型" },
+{ c: "🎨 设计素材", n: "即时设计", d: "国内Figma替代品，免费", u: "https://js.design", k: "UI 设计 国产" },
+{ c: "🎨 设计素材", n: "Flaticon", d: "免费图标下载", u: "https://www.flaticon.com", k: "图标 扁平" },
+
+// 💻 开发
+{ c: "💻 开发技术", n: "GitHub", d: "全球最大代码托管平台", u: "https://github.com", k: "代码 托管 Git" },
+{ c: "💻 开发技术", n: "CodePen", d: "在线写前端代码并预览", u: "https://codepen.io", k: "前端 代码 演示" },
+{ c: "💻 开发技术", n: "RegExr", d: "正则表达式测试和学习", u: "https://regexr.com", k: "正则 表达式 测试" },
+{ c: "💻 开发技术", n: "JSON.cn", d: "JSON格式化、校验、压缩", u: "https://www.json.cn", k: "JSON 格式化" },
+{ c: "💻 开发技术", n: "时间戳转换", d: "时间戳和日期互转", u: "https://tool.lu/timestamp/", k: "时间戳 日期" },
+{ c: "💻 开发技术", n: "Postman", d: "API接口测试工具", u: "https://www.postman.com", k: "API 测试 接口" },
+{ c: "💻 开发技术", n: "Stack Overflow", d: "程序员问答社区", u: "https://stackoverflow.com", k: "编程 问答" },
+{ c: "💻 开发技术", n: "MDN", d: "Web开发技术文档", u: "https://developer.mozilla.org", k: "前端 文档 教程" },
+{ c: "💻 开发技术", n: "Carbon", d: "代码截图美化工具", u: "https://carbon.now.sh", k: "代码 截图 美化" },
+{ c: "💻 开发技术", n: "Wappalyzer", d: "查看网站用了什么技术", u: "https://www.wappalyzer.com", k: "网站技术 分析" },
+
+// 📚 学习
+{ c: "📚 学习查询", n: "Google Scholar", d: "谷歌学术搜索", u: "https://scholar.google.com", k: "学术 论文 搜索" },
+{ c: "📚 学习查询", n: "知网", d: "中国学术期刊数据库", u: "https://cnki.net", k: "论文 学术 中国" },
+{ c: "📚 学习查询", n: "freeCodeCamp", d: "免费编程学习平台", u: "https://freecodecamp.org", k: "编程 学习 免费" },
+{ c: "📚 学习查询", n: "维基百科", d: "全球最大免费百科全书", u: "https://zh.wikipedia.org", k: "百科 知识" },
+{ c: "📚 学习查询", n: "Bilibili", d: "学习视频资源超多", u: "https://bilibili.com", k: "视频 学习 教程" },
+{ c: "📚 学习查询", n: "Coursera", d: "全球名校在线课程", u: "https://coursera.org", k: "课程 名校 学习" },
+{ c: "📚 学习查询", n: "Wolfram Alpha", d: "计算知识引擎", u: "https://wolframalpha.com", k: "计算 知识 数学" },
+{ c: "📚 学习查询", n: "中国大学MOOC", d: "国内大学在线课程平台", u: "https://www.icourse163.org", k: "大学课程 学习" },
+
+// 🧘 生活
+{ c: "🧘 生活实用", n: "快递100", d: "快递单号查询", u: "https://kuaidi100.com", k: "快递 查询" },
+{ c: "🧘 生活实用", n: "草料二维码", d: "在线生成/解析二维码", u: "https://cli.im", k: "二维码 生成" },
+{ c: "🧘 生活实用", n: "Days Matter", d: "倒数日，记录重要日子", u: "https://www.daysmatter.com", k: "倒数 日期" },
+{ c: "🧘 生活实用", n: "下厨房", d: "菜谱搜索和分享", u: "https://xiachufang.com", k: "菜谱 做饭" },
+{ c: "🧘 生活实用", n: "墨迹天气", d: "天气预报", u: "https://www.moji.com", k: "天气 预报" },
+{ c: "🧘 生活实用", n: "什么值得买", d: "购物优惠信息聚合", u: "https://www.smzdm.com", k: "购物 优惠" },
+{ c: "🧘 生活实用", n: "高德地图", d: "导航和地图服务", u: "https://amap.com", k: "地图 导航" },
+{ c: "🧘 生活实用", n: "12306", d: "火车票购买", u: "https://www.12306.cn", k: "火车票 购票" },
+
+// 🔍 搜索
+{ c: "🔍 搜索聚合", n: "DuckDuckGo", d: "隐私保护搜索引擎", u: "https://duckduckgo.com", k: "搜索 隐私" },
+{ c: "🔍 搜索聚合", n: "秘迹搜索", d: "国内隐私搜索引擎", u: "https://miji.baidu.com", k: "搜索 隐私 国产" },
+{ c: "🔍 搜索聚合", n: "Searchmysite", d: "搜索自己网站内容", u: "https://searchmysite.net", k: "站内搜索" },
+{ c: "🔍 搜索聚合", n: "Yandex 识图", d: "以图搜图", u: "https://yandex.com/images", k: "识图 以图搜图" },
+{ c: "🔍 搜索聚合", n: "百度识图", d: "百度以图搜图", u: "https://image.baidu.com", k: "识图 百度" },
+
+// 🛠️ 小工具
+{ c: "🛠️ 实用小工具", n: "Base64 编码", d: "Base64编解码工具", u: "https://base64.us", k: "Base64 编码 解码" },
+{ c: "🛠️ 实用小工具", n: "Hash在线", d: "MD5/SHA等哈希计算", u: "https://md5.cn", k: "哈希 MD5 SHA" },
+{ c: "🛠️ 实用小工具", n: "二维码生成器", d: "文本/网址生成二维码", u: "https://www.qr-code-generator.com", k: "二维码 生成" },
+{ c: "🛠️ 实用小工具", n: "随机密码生成", d: "生成安全随机密码", u: "https://passwordsgenerator.net", k: "密码 生成 安全" },
+{ c: "🛠️ 实用小工具", n: "Color Picker", d: "屏幕取色器", u: "https://colorpicker.me", k: "取色 颜色" },
+];
+
+var clicks = JSON.parse(localStorage.getItem("toolClicks") || "{}");
+var currentFilter = "全部";
+var currentKeyword = "";
+
+function init() {
+  renderFilters();
+  renderAll();
+  renderFreq();
+}
+
+function renderFilters() {
+  var cats = ["全部"];
+  tools.forEach(function(t) { if (cats.indexOf(t.c) === -1) cats.push(t.c); });
+  var html = "";
+  cats.forEach(function(c) {
+    html += '<button class="filter-btn' + (c === currentFilter ? ' active' : '') + '" onclick="setFilter(\'' + c + '\')">' + c + '</button>';
+  });
+  document.getElementById("filters").innerHTML = html;
+}
+
+function setFilter(c) {
+  currentFilter = c;
+  renderFilters();
+  renderAll();
+}
+
+function search() {
+  currentKeyword = document.getElementById("search").value.toLowerCase();
+  renderAll();
+  renderFreq();
+}
+
+function highlight(text) {
+  if (!currentKeyword) return text;
+  var idx = text.toLowerCase().indexOf(currentKeyword);
+  if (idx === -1) return text;
+  return text.substring(0, idx) + "<mark>" + text.substring(idx, idx + currentKeyword.length) + "</mark>" + text.substring(idx + currentKeyword.length);
+}
+
+function renderAll() {
+  var html = "";
+  var cats = {};
+  tools.forEach(function(t, i) {
+    if (currentFilter !== "全部" && t.c !== currentFilter) return;
+    if (currentKeyword) {
+      var hay = (t.n + t.d + t.k + t.c).toLowerCase();
+      if (hay.indexOf(currentKeyword) === -1) return;
+    }
+    if (!cats[t.c]) cats[t.c] = "";
+    cats[t.c] += '<div class="card">' +
+      '<span class="click-count">👆 ' + (clicks[t.n] || 0) + '</span>' +
+      '<h3>' + highlight(t.n) + '</h3>' +
+      '<p>' + highlight(t.d) + '</p>' +
+      '<div class="card-actions">' +
+        '<a class="btn-open" href="' + t.u + '" target="_blank" rel="noopener" onclick="countClick(\'' + t.n + '\')">打开工具 →</a>' +
+        '<button class="btn-copy" onclick="copyUrl(this,\'' + t.u + '\')">📋 复制链接</button>' +
+      '</div></div>';
+  });
+  for (var cat in cats) {
+    html += '<div class="section-title">' + cat + '</div><div class="grid">' + cats[cat] + '</div>';
+  }
+  document.getElementById("allTools").innerHTML = html || '<p style="text-align:center;color:var(--sub);padding:40px;">没有找到匹配的工具</p>';
+}
+
+function renderFreq() {
+  var freq = Object.keys(clicks).filter(function(k) { return clicks[k] >= 3; });
+  if (freq.length === 0) { document.getElementById("freqSection").classList.add("hidden"); return; }
+  document.getElementById("freqSection").classList.remove("hidden");
+  var html = "";
+  freq.sort(function(a, b) { return clicks[b] - clicks[a]; }).forEach(function(name) {
+    var t = tools.find(function(x) { return x.n === name; });
+    if (!t) return;
+    html += '<div class="card"><h3>🔥 ' + t.n + '</h3><p>' + t.d + '</p><div class="card-actions"><a class="btn-open" href="' + t.u + '" target="_blank" onclick="countClick(\'' + t.n + '\')">打开 →</a></div></div>';
+  });
+  document.getElementById("freqGrid").innerHTML = html;
+}
+
+function countClick(name) { clicks[name] = (clicks[name] || 0) + 1; localStorage.setItem("toolClicks", JSON.stringify(clicks)); }
+
+function copyUrl(btn, url) {
+  navigator.clipboard.writeText(url).then(function() {
+    btn.classList.add("copied");
+    btn.textContent = "✅ 已复制";
+    setTimeout(function() { btn.classList.remove("copied"); btn.textContent = "📋 复制链接"; }, 2000);
+  });
+}
+
+function toggleTheme() {
+  var body = document.body;
+  if (body.getAttribute("data-theme") === "dark") {
+    body.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+  } else {
+    body.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+  }
+}
+
+if (localStorage.getItem("theme") === "dark") document.body.setAttribute("data-theme", "dark");
+
+init();
+</script>
+
+</body>
+</html>
